@@ -1,11 +1,12 @@
-import express from 'express'
-import dotenv from 'dotenv'
-import cors from 'cors'
-import mongoose from 'mongoose'
-import morgan from 'morgan'
+require('dotenv').config()
+
+const express = require('express')
+const cors = require('cors')
+const mongoose = require('mongoose')
+const morgan = require('morgan')
 
   ; (async function () {
-    dotenv.config()
+    
     try {
       await mongoose.connect(process.env.MONGO_URL || 'mongodb+srv://LawTeam:kRf122it7AjDwVPV@lawfirmdeploy.hdevwwz.mongodb.net/?retryWrites=true&w=majority', {
         dbName: process.env.MONGO_DB || 'fanlist2-db'
@@ -21,7 +22,7 @@ import morgan from 'morgan'
         .use(cors())
         .use(morgan('combined'))
         .use(express.json())
-        //.use('/api', require('./api/routes'))
+        .use('/api', require('./api/routers'))
 
       const PORT = process.env.PORT || 3000
       app.listen(PORT, (err) => {
