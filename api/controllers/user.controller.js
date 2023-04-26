@@ -49,7 +49,82 @@ async function autenticar(req, res) {
   }
 }
 
+async function confirmar(req, res) {
+  const { token } = res.params
+  const userConfirm = await User.findOne({ token })
+  if (!userConfirm) {
+    const error = new Error("Token no valido")
+    return res.status(403).json({ msg: error.message })
+  }
+
+  try {
+    userConfirm.confirmation = true
+    userConfirm.token = ''
+    await userConfirm.save()
+    res.json({ msg: 'Usuario Confirmado Correctamente' })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function recuperar(req, res) {
+  const { email } = req.body
+  const user = await User.findOne({ email })
+  if (!user) {
+    const error = new Error("El usuario no existe")
+    return res.status(404).json({ msg: error.message })
+  }
+
+  try {
+    user.token = generarId()
+    await user.save()
+    res.json({ msg: "Se ha mandado un email con las instruciones" })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function comprobarToken(req, res) {
+  const { token } = req.params
+
+  const tokenValido = await User.findOne({ token })
+  if (tokenValido) {
+    res.json({ msg: "Token valido y el Usuario existe" })
+  } else {
+    const error = new Error("Token no valido")
+    return res.status(403).json({ msg: error.message })
+  }
+
+}
+
+async function nuevoPassword(req, res) {
+  const { token } = req.params
+  const { password } = req.body
+
+  const user = await User.findOne({ token })
+  if (user) {
+    user.password = password
+    user.token = ''
+    await user.save()
+    res.json({ msg: "Contraseña cambiada" })
+  } else {
+    const error = new Error("Token no valido")
+    return res.status(403).json({ msg: error.message })
+  }
+}
+
+async function perfil(req, res) {
+  const { user } = req
+
+  res.json(user)
+}
+
 module.exports = {
   register,
-  autenticar
+  autenticar,
+  confirmar,
+  recuperar,
+  comprobarToken,
+  nuevoPassword,
+  perfil
 }
