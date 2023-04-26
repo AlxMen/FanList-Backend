@@ -27,13 +27,17 @@ const userSchema = mongoose.Schema({
   }
 })
 
-userSchema.pre('save', async function(next){
+userSchema.pre('save', async function (next) {
   if (!this.isModified("password")) {
     next()
   }
   const salt = await hash.genSalt(10)
   this.password = await hash.hash(this.password, salt)
 })
+
+userSchema.methods.confirmPassword = async function (passwordForm) {
+  return await hash.compare(passwordForm, this.password)
+}
 
 const User = mongoose.model("User", userSchema)
 module.exports = User
