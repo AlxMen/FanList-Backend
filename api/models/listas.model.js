@@ -7,19 +7,10 @@ const listaSchema = mongoose.Schema({
     trim: true,
     required: true
   },
-  columns: [{
-    namecolumn: {
-      type: String
-    },
-    cards: [{
-      namecard: {
-        type: String
-      },
-      description: {
-        type: String
-      }
-    }]
-  }],
+  date: {
+    type: Date,
+    default: Date.now()
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
