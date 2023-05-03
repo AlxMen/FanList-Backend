@@ -1,4 +1,6 @@
 const List = require('../models/listas.model')
+const Column = require('../models/column.model')
+const Card = require('../models/card.model')
 
 async function getListas(req, res) {
   const lists = await List.find().where('owner').equals(req.user)
@@ -31,8 +33,16 @@ async function getLista(req, res) {
     const error = new Error("Accion No Valida")
     return res.status(401).json({ msg: error.message })
   }
+  
+  const columns = await Column.find().where('listowner').equals(list._id)
+  
+  const cards = await Card.find().where('listowner').equals(list._id)
 
-  res.json(list)
+  res.json({
+    list,
+    columns,
+    cards
+  })
 }
 
 async function putLista(req, res) {
@@ -57,14 +67,6 @@ async function putLista(req, res) {
   } catch (error) {
     console.log(error);
   }
-}
-
-async function putListaColumn(req, res) {
-
-}
-
-async function putListaCard(req, res) {
-
 }
 
 async function deleteLista(req, res) {
@@ -94,7 +96,5 @@ module.exports = {
   postLista,
   getLista,
   putLista,
-  putListaColumn,
-  putListaCard,
   deleteLista
 }

@@ -12,6 +12,10 @@ const cardSchema = mongoose.Schema({
   columnowner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Column"
+  },
+  listowner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "List"
   }
 })
 
