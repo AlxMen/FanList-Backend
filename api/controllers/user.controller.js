@@ -2,6 +2,7 @@ const User = require('../models/user.model')
 
 const { generarId } = require('../helpers/generarId')
 const { generarJWT } = require('../helpers/generarJWT')
+const { emailRegistro, emailRecoveryPassword } = require('../helpers/email')
 
 async function register(req, res) {
 
@@ -16,8 +17,15 @@ async function register(req, res) {
   try {
     const user = new User(req.body)
     user.token = generarId()
-    const userSave = await user.save()
-    res.json(userSave)
+    await user.save()
+
+    emailRegistro({
+      email: user.email,
+      name: user.name,
+      token: user.token
+    })
+
+    res.json({msg: 'Usuario Creado Correctamente, Revisa tu Email para confirmar tu cuenta'})
   } catch (error) {
     console.log(error);
   }
@@ -50,7 +58,7 @@ async function autenticar(req, res) {
 }
 
 async function confirmar(req, res) {
-  const { token } = res.params
+  const { token } = req.params
   const userConfirm = await User.findOne({ token })
   if (!userConfirm) {
     const error = new Error("Token no valido")
@@ -78,6 +86,12 @@ async function recuperar(req, res) {
   try {
     user.token = generarId()
     await user.save()
+
+    emailRecoveryPassword({
+      email: user.email,
+      name: user.name,
+      token: user.token
+    })
     res.json({ msg: "Se ha mandado un email con las instruciones" })
   } catch (error) {
     console.log(error);
