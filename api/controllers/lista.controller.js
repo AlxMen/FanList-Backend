@@ -34,14 +34,14 @@ async function getLista(req, res) {
     return res.status(401).json({ msg: error.message })
   }
   
-  const columns = await Column.find().where('listowner').equals(list._id)
+  //const columns = await Column.find().where('listowner').equals(list._id)
   
-  const cards = await Card.find().where('listowner').equals(list._id)
+  //const cards = await Card.find().where('listowner').equals(list._id)
 
   res.json({
     list,
-    columns,
-    cards
+    //columns,
+    //cards
   })
 }
 
