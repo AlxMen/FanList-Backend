@@ -9,6 +9,7 @@ async function getListas(req, res) {
 
 async function postLista(req, res) {
   const newList = new List(req.body)
+  console.log(req.body);
   newList.owner = req.user._id
 
   try {
