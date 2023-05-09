@@ -17,6 +17,8 @@ async function postColumn(req, res) {
 
   try {
     const saveColumn = await Column.create(req.body)
+    existList.columns.push(saveColumn._id)
+    await existList.save()
     res.json(saveColumn)
   } catch (error) {
     console.log(error);

@@ -3,7 +3,7 @@ const Column = require('../models/column.model')
 const Card = require('../models/card.model')
 
 async function getListas(req, res) {
-  const lists = await List.find().where('owner').equals(req.user)
+  const lists = await List.find().where('owner').equals(req.user).select("-columns")
   res.json(lists)
 }
 
@@ -23,7 +23,7 @@ async function postLista(req, res) {
 async function getLista(req, res) {
 
   const { id } = req.params
-  const list = await List.findById(id)
+  const list = await List.findById(id).populate('columns')
 
   if (!list) {
     const error = new Error("No Encontrado")
@@ -35,14 +35,10 @@ async function getLista(req, res) {
     return res.status(401).json({ msg: error.message })
   }
   
-  //const columns = await Column.find().where('listowner').equals(list._id)
-  
   //const cards = await Card.find().where('listowner').equals(list._id)
 
   res.json({
-    list,
-    //columns,
-    //cards
+    list
   })
 }
 

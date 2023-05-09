@@ -14,7 +14,13 @@ const listaSchema = mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }
+  },
+  columns: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Column'
+    }
+  ]
 })
 
 const Lista = mongoose.model("List", listaSchema)
