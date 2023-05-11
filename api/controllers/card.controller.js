@@ -35,37 +35,13 @@ async function putCard(req, res) {
 
   card.name = req.body.name || card.name
   card.description = req.body.description || card.description
+  card.columnowner = req.body.columnowner || card.columnowner
 
   try {
     const updatecard = await card.save()
     res.json(updatecard)
   } catch (error) {
     console.log(error);
-  }
-}
-
-async function putCardColumn(req, res) {
-  const { id, idcard } = req.params
-
-  const card = await Card.findById(idcard).populate("listowner")
-
-  if (!card) {
-    const error = new Error("La tarjeta no existe")
-    return res.status(404).json({ msg: error.message })
-  }
-
-  if (card.listowner.owner.toString() !== req.user._id.toString()) {
-    const error = new Error("No tienes permisos para esta accion")
-    return res.status(403).json({ msg: error.message })
-  }
-
-  card.columnowner = id || card.columnowner
-
-  try {
-    const updatecard = await card.save()
-    res.json(updatecard)
-  } catch (error) {
-    console.log(error)
   }
 }
 
@@ -97,6 +73,5 @@ async function deleteCard(req, res) {
 module.exports = {
   postCard,
   putCard,
-  putCardColumn,
   deleteCard
 }
