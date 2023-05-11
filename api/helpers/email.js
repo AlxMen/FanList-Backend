@@ -21,7 +21,7 @@ async function emailRegistro(datos) {
       <p>Hola: ${name} Bienvenido a FanList tu gestor de listas dinamica</p>
       <p>Tu cuenta esta ya casi lista, solo falta la confirmarla, por favor acceda al suiguente enlace para la verificacion: </p>
       
-      <a href="http://localhost:${process.env.PORT_FRONT}/confirm/${token}">Verificar Cuenta</a>
+      <a href="${process.env.PORT_FRONT}/confirm/${token}">Verificar Cuenta</a>
 
       <p>Si tu no creastes esta cuenta, puedes ignorar el mensaje</p>
     `
@@ -49,7 +49,7 @@ async function emailRecoveryPassword(datos) {
       <p>Hola: ${name} has solicitado reestablecer su contraseña de usuario</p>
       <p>Por favor sigua las siguinete enlace para crear su nueva contraseña: </p>
       
-      <a href="http://localhost:${process.env.PORT_FRONT}/recovery-password/${token}">Nueva Contraseña</a>
+      <a href="${process.env.PORT_FRONT}/recovery-password/${token}">Nueva Contraseña</a>
 
       <p>Si tu no has solicitado reestablecer la contraseña, puedes ignorar el mensaje</p>
     `
