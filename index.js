@@ -31,7 +31,7 @@ const morgan = require('morgan')
         }
         console.info('>'.repeat(40))
         console.info('💻  FanList Server')
-        console.info(`📡  PORT: http://localhost:${PORT}`)
+        console.info(`📡  ${PORT}`)
         console.info('>'.repeat(40) + '\n')
       })
     } catch (err) {
